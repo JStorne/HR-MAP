@@ -1,0 +1,2 @@
+        AssetDatabaseOpenHelper adb = new AssetDatabaseOpenHelper(this);
+        SQLiteDatabase db = adb.openDatabase();
