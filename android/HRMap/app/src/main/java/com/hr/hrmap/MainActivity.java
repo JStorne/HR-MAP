@@ -1,5 +1,6 @@
 package com.hr.hrmap;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -42,6 +43,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        //database openen:
+        AssetDatabaseOpenHelper adb = new AssetDatabaseOpenHelper(this);
+        SQLiteDatabase db = adb.openDatabase();
+
     }
 
     @Override
