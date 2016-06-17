@@ -10,11 +10,16 @@ import android.view.ViewGroup;
  * Created by jinxi on 6/7/16.
  */
 public class HoofdPaginaFragment extends Fragment {
+
+    PlattegrondView plattegrond;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.hoofdpagina,
                 container, false);
-        return view;
+        //lets keep a reference of DrawView
+        plattegrond = (PlattegrondView) view.findViewById(R.id.plattegrond);
+        return plattegrond;
     }
 }
