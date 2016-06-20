@@ -7,10 +7,19 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Instellingen</string>
 
+    <string name="information_intro_header">HR-MAP</string>
+    <string name="information_intro_nl_h2_1">Welkom bij HR-Map<p></p></string>
+    <string name="information_intro_nl_p1">Vanaf nu kan je de weg vinden binnen de schoolgebouwen van Hogeschool rotterdam.</string>
+    <string name="information_intro_nl_h2_2">Zoeken</string>
+    <string name="information_intro_nl_p2">Zelfs op de plattegrond aan het ronddwalen op zoek naar een lokaal? Gebruik de zoekfunctie en vind meteen de locatie van het lokaal.</string>
+    <string name="information_intro_nl_h2_3">Rooster koppelen</string>
+    <string name="information_intro_nl_p3">Geen idee welk lokaal je zit bij de volgende les? Ga snel naar je instellingen en koppel de HR-Map met je rooster. Hierdoor kan je meteen ziet waar je moet zijn.</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
+
+
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_description_social_recommendations">Recommendations for people to contact
