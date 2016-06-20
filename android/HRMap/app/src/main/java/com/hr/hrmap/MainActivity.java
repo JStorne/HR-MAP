@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import org.jgrapht.*;
+import org.jgrapht.alg.DijkstraShortestPath;
+import org.jgrapht.graph.*;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -42,6 +45,38 @@ public class MainActivity extends AppCompatActivity
         AssetDatabaseOpenHelper adb = new AssetDatabaseOpenHelper(this);
         SQLiteDatabase db = adb.openDatabase();
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
+        UndirectedGraph<String, DefaultEdge> graph = createStringGraph();
+        DijkstraShortestPath path = new DijkstraShortestPath<>(graph, "v1", "v3");
+        Log.d("Jinxi", graph.toString());
+        Log.d("Jinxi", path.getPath().toString());
+
+    }
+
+    private static UndirectedGraph<String, DefaultEdge> createStringGraph()
+    {
+        UndirectedGraph<String, DefaultEdge> g =
+                new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
+
+        String v1 = "v1";
+        String v2 = "v2";
+        String v3 = "v3";
+        String v4 = "v4";
+
+        // add the vertices
+        g.addVertex(v1);
+        g.addVertex(v2);
+        g.addVertex(v3);
+        g.addVertex(v4);
+
+        // add edges to create a circuit
+        g.addEdge(v1, v2);
+        g.addEdge(v2, v3);
+        g.addEdge(v3, v4);
+        g.addEdge(v4, v1);
+
+        return g;
     }
 
     @Override
