@@ -43,4 +43,10 @@ public class Locatie {
     {
         canvas.drawLine( min(this.x, locatie.x) + 5 ,  min(this.y, locatie.y) + 5, max(this.x, locatie.x) - 5, max(this.y, locatie.y) - 5, paint);
     }
+
+    @Override
+    public String toString()
+    {
+        return this.naam;
+    }
 }

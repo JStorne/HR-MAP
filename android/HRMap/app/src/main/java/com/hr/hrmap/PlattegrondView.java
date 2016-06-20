@@ -17,7 +17,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
+import org.jgrapht.Graphs;
 import org.jgrapht.UndirectedGraph;
+import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
@@ -31,6 +33,10 @@ public class PlattegrondView extends View implements OnTouchListener {
     List<Locatie> locaties = new ArrayList<>();
     UndirectedGraph<Locatie, DefaultEdge> g =  new SimpleGraph<Locatie, DefaultEdge>(DefaultEdge.class);
     Canvas canvas;
+    Locatie start;
+    Locatie destination;
+
+
 
     public PlattegrondView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -50,6 +56,7 @@ public class PlattegrondView extends View implements OnTouchListener {
         Locatie lift = new Locatie(1325, 180, "lift");
         this.locaties.add(lift); //lift
         this.g.addVertex(lift);
+        this.start = lift;
 
         Locatie m1 = new Locatie(1000, 400, "m1");
         this.locaties.add(m1); //m1
@@ -95,6 +102,7 @@ public class PlattegrondView extends View implements OnTouchListener {
         this.locaties.add(h1_403); //H.1.403
         this.g.addVertex(h1_403);
         this.g.addEdge(m4, h1_403);
+        this.destination = h1_403;
 
         Locatie h1_319 = new Locatie(400, 500, "H.1.319", 30);
         this.locaties.add(h1_319); //H.1.319
@@ -115,6 +123,7 @@ public class PlattegrondView extends View implements OnTouchListener {
         this.locaties.add(h1_312); //H.1.312
         this.g.addVertex(h1_312);
         this.g.addEdge(m1, h1_312);
+
 
         Locatie h1_306 = new Locatie(1100, 525, "H.1.306", 30);
         this.locaties.add(h1_306); //H.1.306
@@ -158,28 +167,41 @@ public class PlattegrondView extends View implements OnTouchListener {
             locatie.draw(canvas);
         }
 
-        Log.d(TAG, "point: drawing lines...");
+
         canvas.drawLine(0, 0, 20, 20, paint);
         canvas.drawLine(20, 0, 0, 20, paint);
-        Locatie l1 = locaties.get(0);
-        Locatie l2 = locaties.get(1);
-        drawAllEdges();
 
-//        Path path = new Path();
-//        path.moveTo(700, 525);
-//        path.lineTo(5, 0);
-//        path.lineTo(-5, 0);
-//        path.close();
-//        path.offset(10, 40);
-//        canvas.drawPath(path, paint);
-//        path.offset(50, 100);
-//        canvas.drawPath(path, paint);
-//// offset is cumlative
-//// next draw displaces 50,100 from previous
-//        path.offset(50, 100);
-//        canvas.drawPath(path, paint);
+        //drawAllEdges();
+        DijkstraShortestPath path = new DijkstraShortestPath<>(g, this.start, this.destination);
+        List<Locatie> vertices = Graphs.getPathVertexList(path.getPath());
+        Log.d("Jinxi", vertices.toString());
+        Locatie prev = null;
+        for(Locatie locatie: vertices)
+        {
+            if(prev == null)
+            {
+                prev = locatie;
+                continue;
+            }
+
+            drawPath(prev, locatie);
+            prev = locatie;
+        }
+
     }
 
+    public void drawPath(Locatie l1, Locatie l2)
+    {
+        Log.d("Jinxi", "drawing path...." + l1.toString() + " -> " + l2);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(5);
+        paint.setColor(Color.BLUE);
+        Path path = new Path();
+        path.moveTo(l1.x, l1.y);
+        path.lineTo(l2.x, l2.y);
+        path.close();
+        canvas.drawPath(path, paint);
+    }
 
     public void drawAllEdges()
     {
