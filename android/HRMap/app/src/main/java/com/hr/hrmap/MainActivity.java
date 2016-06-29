@@ -2,6 +2,7 @@ package com.hr.hrmap;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -21,11 +23,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import org.jgrapht.*;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.*;
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
+
+    PlattegrondFragment plattegrondFragment = null;
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Log.d("jinxi", "search is submited: " + query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +72,12 @@ public class MainActivity extends AppCompatActivity
         DijkstraShortestPath path = new DijkstraShortestPath<>(graph, "v1", "v3");
         Log.d("Jinxi", graph.toString());
         Log.d("Jinxi", path.getPath().toString());
+
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String uri = intent.getDataString();
+            Log.d("Jinxi", "Suggestion: "+ uri);
+        }
 
     }
 
@@ -105,8 +128,10 @@ public class MainActivity extends AppCompatActivity
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setOnQueryTextListener(this);
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(true);
 
         return true;
     }
@@ -131,14 +156,16 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Fragment fragment;
+
         if (id == R.id.hoofdpagina) {
+            PlattegrondFragment fragment;
             fragment = PlattegrondFragment.getInstance();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_fragment, fragment);
             ft.commit();
-
+            plattegrondFragment = fragment;
         } else if (id == R.id.informatie) {
+            Fragment fragment;
             fragment = new InformatieFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_fragment, fragment);
@@ -148,6 +175,27 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Log.d("Jinxi", "class is " + getSupportFragmentManager().findFragmentById(R.id.content_fragment).getClass().toString());
+            if(this.plattegrondFragment != null)
+            {
+                this.plattegrondFragment.setDestination();
+            }else{
+                if(getSupportFragmentManager().findFragmentById(R.id.content_fragment).getClass().getSimpleName().equals("PlattegrondFragment")){
+                    plattegrondFragment = (PlattegrondFragment) getSupportFragmentManager().findFragmentById(R.id.content_fragment);
+                    plattegrondFragment.setDestination();
+                }
+            }
+
+            String uri = intent.getDataString();
+            Log.d("Jinxi", intent.getDataString());
+            Toast.makeText(this, "Suggestion: "+ uri, Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

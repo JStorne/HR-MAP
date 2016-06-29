@@ -4,9 +4,11 @@ package com.hr.hrmap;
  * Created by jinxi on 6/16/16.
  */
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -38,6 +40,12 @@ public class PlattegrondFragment extends Fragment {
                 container, false);
         //lets keep a reference of DrawView
         plattegrondView = (PlattegrondView ) _view.findViewById(R.id.plattegrond);
+        Intent intent = getActivity().getIntent();
+        Log.d("Jinxi", "creating fragment..."+intent.getAction());
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String uri = intent.getDataString();
+            Log.d("Jinxi", "Suggestion: "+ uri);
+        }
         return _view;
     }
 
@@ -56,6 +64,25 @@ public class PlattegrondFragment extends Fragment {
         super.onDestroy();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Intent intent = getActivity().getIntent();
+        Log.d("Jinxi", "Resuming fragment..."+intent.getAction());
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Intent intent = getActivity().getIntent();
+        Log.d("Jinxi", "starting fragment..."+intent.getAction());
+    }
+
+    public void setDestination()
+    {
+        plattegrondView.destination = plattegrondView.locaties.get(6);
+        plattegrondView.invalidate();
+        Log.d("Jinxi", "Setting destination..");
+    }
 
 }

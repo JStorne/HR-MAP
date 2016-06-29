@@ -3,6 +3,7 @@ package com.hr.hrmap;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 /**
  * Created by jinxi on 6/20/16.
@@ -13,12 +14,6 @@ public class SearchResultsActivity extends AppCompatPreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handleIntent(getIntent());
-    }
-
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
     }
 
     private void handleIntent(Intent intent) {

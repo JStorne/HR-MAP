@@ -156,6 +156,7 @@ public class PlattegrondView extends View implements OnTouchListener {
 
     @Override
     public void onDraw(Canvas canvas) {
+        Log.d("jinxi", "Redrawing plattegrond");
         this.canvas = canvas;
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(5);

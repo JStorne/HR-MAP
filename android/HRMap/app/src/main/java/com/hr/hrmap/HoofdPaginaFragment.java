@@ -1,7 +1,9 @@
 package com.hr.hrmap;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,21 @@ public class HoofdPaginaFragment extends Fragment {
                 container, false);
         //lets keep a reference of DrawView
         plattegrond = (PlattegrondView) view.findViewById(R.id.plattegrond);
+
+
         return plattegrond;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Intent intent = getActivity().getIntent();
+        Log.d("Jinxi", "Resuming fragment...");
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String uri = intent.getDataString();
+            Log.d("Jinxi", "Suggestion: "+ uri);
+        }
+    }
+
+
 }

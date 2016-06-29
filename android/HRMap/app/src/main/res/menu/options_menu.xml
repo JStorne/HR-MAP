@@ -9,5 +9,7 @@
         android:icon="@android:drawable/ic_menu_search"
         yourapp:showAsAction="collapseActionView|ifRoom"
         yourapp:actionViewClass="android.support.v7.widget.SearchView"
+        android:searchSuggestAuthority="com.hr.hrmap.SearchResultsActivity"
+        android:searchSuggestIntentAction="android.intent.action.VIEW"
         />
 </menu>

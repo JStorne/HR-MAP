@@ -57,14 +57,19 @@ public class LokalenSuggestionProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
         MatrixCursor cursor = new MatrixCursor(
                 new String[] {
-                        SearchManager.SUGGEST_COLUMN_TEXT_1
+                        BaseColumns._ID,
+                        SearchManager.SUGGEST_COLUMN_TEXT_1,
                 }
         );
+
+        String query = uri.getLastPathSegment().toLowerCase();
         for(Locatie locatie: locaties)
         {
-            cursor.addRow(new Object[]{locatie.naam});
+            if (locatie.naam.toLowerCase().contains(query)){
+                cursor.addRow(new Object[]{locatie.x, locatie.naam});
+            }
+
         }
-        Log.d("jinxi", cursor.toString());
         return cursor;
     }
 
