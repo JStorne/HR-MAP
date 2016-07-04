@@ -54,20 +54,26 @@ public class Plattegrond {
         this.g.addVertex(m4);
         this.g.addEdge(m3, m4);
 
-        Locatie h1_110 = new Locatie(600, 200, "H.1.110", 30, 1);
+        Locatie h1_110 = new Locatie(660, 180, "H.1.101", 30, 1);
         this.locaties.add(h1_110); //H.1.110
         this.g.addVertex(h1_110);
         this.g.addEdge(m3, h1_110);
 
-        Locatie h1_112 = new Locatie(750, 200, "H.1.112", 30, 1);
+        Locatie h1_112 = new Locatie(790, 180, "H.1.102", 30, 1);
         this.locaties.add(h1_112); //H.1.112
         this.g.addVertex(h1_112);
         this.g.addEdge(m2, h1_112);
 
-        Locatie h1_114 = new Locatie(900, 200, "H.1.114", 30, 1);
-        this.locaties.add(h1_114); //H.1.114
-        this.g.addVertex(h1_114);
-        this.g.addEdge(m1, h1_114);
+        Locatie h1_405 = new Locatie(300, 400, "H.1.405", 30, 1);
+        this.locaties.add(h1_405); //H.1.114
+        this.g.addVertex(h1_405);
+        this.g.addEdge(m4, h1_405);
+
+        Locatie h1_104 = new Locatie(930, 180, "H.1.104", 30, 1); //H.1.114
+        this.locaties.add(h1_104); //H.1.114
+        this.g.addVertex(h1_104);
+        this.g.addEdge(m4, h1_104);
+
 
         Locatie h1_403 = new Locatie(300, 525, "H.1.403", 30, 1);
         this.locaties.add(h1_403); //H.1.403
@@ -75,38 +81,39 @@ public class Plattegrond {
         this.g.addEdge(m4, h1_403);
 
 
-        Locatie h1_319 = new Locatie(400, 500, "H.1.319", 30, 1);
+        Locatie h1_319 = new Locatie(410, 570, "H.1.319", 30, 1);
         this.locaties.add(h1_319); //H.1.319
         this.g.addVertex(h1_319);
         this.g.addEdge(m4, h1_319);
 
-        Locatie h1_318 = new Locatie(500, 525, "H.1.318", 30, 1);
+        Locatie h1_318 = new Locatie(480, 570, "H.1.318", 30, 1);
         this.locaties.add(h1_318); //H.1.318
         this.g.addVertex(h1_318);
         this.g.addEdge(m3, h1_318);
 
-        Locatie h1_315 = new Locatie(700, 525, "H.1.315", 30, 1);
+        Locatie h1_315 = new Locatie(680, 570, "H.1.315", 30, 1);
         this.locaties.add(h1_315); //H.1.315
         this.g.addVertex(h1_315);
         this.g.addEdge(m2, h1_315);
 
-        Locatie h1_312 = new Locatie(900, 525, "H.1.312", 30, 1);
+        Locatie h1_312 = new Locatie(860, 570, "H.1.312", 30, 1);
         this.locaties.add(h1_312); //H.1.312
         this.g.addVertex(h1_312);
         this.g.addEdge(m1, h1_312);
 
 
-        Locatie h1_306 = new Locatie(1100, 525, "H.1.306", 30, 1);
+        Locatie h1_306 = new Locatie(1050, 570, "H.1.306", 30, 1);
         this.locaties.add(h1_306); //H.1.306
         this.g.addVertex(h1_306);
         this.g.addEdge(m1, h1_306);
 
-        Locatie h1_206 = new Locatie(1400, 525, "H.1.206", 30, 1);
+        Locatie h1_206 = new Locatie(1380, 525, "H.1.206", 30, 1);
         this.locaties.add(h1_206); //H.1.206
         this.g.addVertex(h1_206);
         this.g.addEdge(lift, h1_206);
+        this.g.addEdge(m1, h1_206);
 
-        Locatie h1_204 = new Locatie(1400, 400, "H.1.206", 30, 1);
+        Locatie h1_204 = new Locatie(1390, 380, "H.1.204", 30, 1);
         this.locaties.add(h1_204); //H.1.204r
         this.g.addVertex(h1_204);
         this.g.addEdge(lift, h1_204);

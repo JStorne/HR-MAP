@@ -47,6 +47,7 @@ public class Locatie {
         }else{
             //this.visible = true;
         }
+        //this.visible = true;
 
     }
 
@@ -56,7 +57,7 @@ public class Locatie {
             return;
         }
         canvas.drawCircle(this.x, this.y, 10, this.paint);
-        canvas.drawText(this.naam, this.x - 50 ,this.y - 20, this.paint);
+       // canvas.drawText(this.naam, this.x - 50 ,this.y - 20, this.paint);
     }
 
     public void drawArrowToLocatie(Locatie locatie, Canvas canvas)

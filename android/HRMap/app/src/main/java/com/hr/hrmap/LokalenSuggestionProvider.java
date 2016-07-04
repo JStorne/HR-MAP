@@ -33,9 +33,10 @@ public class LokalenSuggestionProvider extends ContentProvider {
 //        this.locaties.add(new Locatie(800, 400, "m3", 30, 1)); //m3
 //        this.locaties.add(new Locatie(1000, 400, "m4", 30, 1)); //m4
 
-        this.locaties.add(new Locatie(600, 200, "H.1.110", 30, 1)); //H.1.110
-        this.locaties.add(new Locatie(750, 200, "H.1.112", 30, 1)); //H.1.112
-        this.locaties.add(new Locatie(900, 200, "H.1.114", 30, 1)); //H.1.114
+        this.locaties.add(new Locatie(600, 200, "H.1.101", 30, 1)); //H.1.110
+        this.locaties.add(new Locatie(750, 200, "H.1.102", 30, 1)); //H.1.112
+        this.locaties.add(new Locatie(900, 200, "H.1.104", 30, 1)); //H.1.114
+        this.locaties.add(new Locatie(900, 200, "H.1.105", 30, 1)); //H.1.114
 
         this.locaties.add(new Locatie(300, 525, "H.1.403", 30, 1)); //H.1.403
         this.locaties.add(new Locatie(400, 500, "H.1.319", 30, 1)); //H.1.319
@@ -45,7 +46,7 @@ public class LokalenSuggestionProvider extends ContentProvider {
         this.locaties.add(new Locatie(1100, 525, "H.1.306", 30, 1)); //H.1.306
 
         this.locaties.add(new Locatie(1400, 525, "H.1.206", 30,1)); //H.1.206
-        this.locaties.add(new Locatie(1400, 400, "H.1.206", 30, 1)); //H.1.204
+        this.locaties.add(new Locatie(1400, 400, "H.1.204", 30, 1)); //H.1.204
 
         /**
          * tweede verdieping
