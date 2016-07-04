@@ -72,7 +72,7 @@ public class Plattegrond {
         Locatie h1_104 = new Locatie(930, 180, "H.1.104", 30, 1); //H.1.114
         this.locaties.add(h1_104); //H.1.114
         this.g.addVertex(h1_104);
-        this.g.addEdge(m4, h1_104);
+        this.g.addEdge(m1, h1_104);
 
 
         Locatie h1_403 = new Locatie(300, 525, "H.1.403", 30, 1);
