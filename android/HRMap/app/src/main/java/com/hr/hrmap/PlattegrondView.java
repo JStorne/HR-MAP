@@ -5,7 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -33,112 +35,31 @@ public class PlattegrondView extends View implements OnTouchListener {
     List<Locatie> locaties = new ArrayList<>();
     UndirectedGraph<Locatie, DefaultEdge> g =  new SimpleGraph<Locatie, DefaultEdge>(DefaultEdge.class);
     Canvas canvas;
-    Locatie start;
-    Locatie destination;
+    public int currentVerdieping = 1;
 
 
 
     public PlattegrondView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.initLocaties();
+        this.init(context);
         setFocusable(true);
         setFocusableInTouchMode(true);
 
         this.setOnTouchListener(this);
-
+        //this.setBackgroundResource(R.drawable.h2);
         paint.setColor(Color.BLACK);
         paint.setAntiAlias(true);
 
+        /* Load the correct list of locaties */
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PlattegrondView, 0, 0);
+        String verdieping = a.getString(R.styleable.PlattegrondView_verdieping);
+        MainActivity activity = (MainActivity) getContext();
+        this.locaties = activity.plattegrond.getLocatiesVanVerdieping(Integer.parseInt(verdieping));
     }
 
-    private void initLocaties()
+
+    private void init(Context context)
     {
-        Locatie lift = new Locatie(1325, 180, "lift");
-        this.locaties.add(lift); //lift
-        this.g.addVertex(lift);
-        this.start = lift;
-
-        Locatie m1 = new Locatie(1000, 400, "m1");
-        this.locaties.add(m1); //m1
-        this.g.addVertex(m1);
-        this.g.addEdge(lift, m1);
-
-        Locatie m2 = new Locatie(800, 400, "m2");
-        this.locaties.add(m2); //m2
-        this.g.addVertex(m2);
-        this.g.addEdge(m1, m2);
-
-        Locatie m3 = new Locatie(600, 400, "m3");
-        this.locaties.add(m3); //m3
-        this.g.addVertex(m3);
-        this.g.addEdge(m2, m3);
-
-
-        Locatie m4 = new Locatie(400, 400, "m4");
-        this.locaties.add(m4); //m1
-        this.g.addVertex(m4);
-        this.g.addEdge(m3, m4);
-
-
-
-
-
-        Locatie h1_110 = new Locatie(600, 200, "H.1.110", 30);
-        this.locaties.add(h1_110); //H.1.110
-        this.g.addVertex(h1_110);
-        this.g.addEdge(m3, h1_110);
-
-        Locatie h1_112 = new Locatie(750, 200, "H.1.112", 30);
-        this.locaties.add(h1_112); //H.1.112
-        this.g.addVertex(h1_112);
-        this.g.addEdge(m2, h1_112);
-
-        Locatie h1_114 = new Locatie(900, 200, "H.1.114", 30);
-        this.locaties.add(h1_114); //H.1.114
-        this.g.addVertex(h1_114);
-        this.g.addEdge(m1, h1_114);
-
-        Locatie h1_403 = new Locatie(300, 525, "H.1.403", 30);
-        this.locaties.add(h1_403); //H.1.403
-        this.g.addVertex(h1_403);
-        this.g.addEdge(m4, h1_403);
-        this.destination = h1_403;
-
-        Locatie h1_319 = new Locatie(400, 500, "H.1.319", 30);
-        this.locaties.add(h1_319); //H.1.319
-        this.g.addVertex(h1_319);
-        this.g.addEdge(m4, h1_319);
-
-        Locatie h1_318 = new Locatie(500, 525, "H.1.318", 30);
-        this.locaties.add(h1_318); //H.1.318
-        this.g.addVertex(h1_318);
-        this.g.addEdge(m3, h1_318);
-
-        Locatie h1_315 = new Locatie(700, 525, "H.1.315", 30);
-        this.locaties.add(h1_315); //H.1.315
-        this.g.addVertex(h1_315);
-        this.g.addEdge(m2, h1_315);
-
-        Locatie h1_312 = new Locatie(900, 525, "H.1.312", 30);
-        this.locaties.add(h1_312); //H.1.312
-        this.g.addVertex(h1_312);
-        this.g.addEdge(m1, h1_312);
-
-
-        Locatie h1_306 = new Locatie(1100, 525, "H.1.306", 30);
-        this.locaties.add(h1_306); //H.1.306
-        this.g.addVertex(h1_306);
-        this.g.addEdge(m1, h1_306);
-
-        Locatie h1_206 = new Locatie(1400, 525, "H.1.206", 30);
-        this.locaties.add(h1_206); //H.1.206
-        this.g.addVertex(h1_206);
-        this.g.addEdge(lift, h1_206);
-
-        Locatie h1_204 = new Locatie(1400, 400, "H.1.206", 30);
-        this.locaties.add(h1_204); //H.1.204
-        this.g.addVertex(h1_204);
-        this.g.addEdge(lift, h1_204);
 
 
     }
@@ -160,9 +81,6 @@ public class PlattegrondView extends View implements OnTouchListener {
         this.canvas = canvas;
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(5);
-        for (Point point : points) {
-            canvas.drawCircle(point.x, point.y, 5, paint);
-        }
 
         for (Locatie locatie : locaties) {
             locatie.draw(canvas);
@@ -173,21 +91,20 @@ public class PlattegrondView extends View implements OnTouchListener {
         canvas.drawLine(20, 0, 0, 20, paint);
 
         //drawAllEdges();
-        DijkstraShortestPath path = new DijkstraShortestPath<>(g, this.start, this.destination);
-        List<Locatie> vertices = Graphs.getPathVertexList(path.getPath());
-        Log.d("Jinxi", vertices.toString());
-        Locatie prev = null;
-        for(Locatie locatie: vertices)
-        {
-            if(prev == null)
-            {
-                prev = locatie;
-                continue;
-            }
-
-            drawPath(prev, locatie);
-            prev = locatie;
-        }
+//
+//        Log.d("Jinxi", vertices.toString());
+//        Locatie prev = null;
+//        for(Locatie locatie: vertices)
+//        {
+//            if(prev == null)
+//            {
+//                prev = locatie;
+//                continue;
+//            }
+//
+//            drawPath(prev, locatie);
+//            prev = locatie;
+//        }
 
     }
 

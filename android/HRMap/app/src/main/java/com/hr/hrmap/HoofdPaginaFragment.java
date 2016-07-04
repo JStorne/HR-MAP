@@ -21,10 +21,10 @@ public class HoofdPaginaFragment extends Fragment {
         View view = inflater.inflate(R.layout.hoofdpagina,
                 container, false);
         //lets keep a reference of DrawView
-        plattegrond = (PlattegrondView) view.findViewById(R.id.plattegrond);
+        //plattegrond = (PlattegrondView) view.findViewById(R.id.plattegrond);
 
 
-        return plattegrond;
+        return view;
     }
 
     @Override

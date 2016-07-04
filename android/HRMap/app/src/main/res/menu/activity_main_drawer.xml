@@ -3,9 +3,9 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/hoofdpagina"
+            android:id="@+id/verdiepingen"
             android:icon="@drawable/home"
-            android:title="Hoofdpagina" />
+            android:title="Verdiepingen" />
         <item
             android:id="@+id/informatie"
             android:icon="@drawable/information"

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +18,16 @@ import android.graphics.Color;
 
 public class PlattegrondFragment extends Fragment {
     PlattegrondView  plattegrondView;
+    public int plattergrondViewID;
 
-    public PlattegrondFragment() {
+    public PlattegrondFragment()
+    {
+
+    }
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
     }
 
 
@@ -38,8 +47,10 @@ public class PlattegrondFragment extends Fragment {
                              Bundle savedInstanceState) {
         View _view = inflater.inflate(R.layout.hoofdpagina,
                 container, false);
-        //lets keep a reference of DrawView
-        plattegrondView = (PlattegrondView ) _view.findViewById(R.id.plattegrond);
+        /**
+         * View aanmaken
+         */
+        //plattegrondView = (PlattegrondView ) _view.findViewById(R.id.plattegrond);
         Intent intent = getActivity().getIntent();
         Log.d("Jinxi", "creating fragment..."+intent.getAction());
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
@@ -51,7 +62,12 @@ public class PlattegrondFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+//        View testview = findViewById(R.id.pager);
+//        viewpager = (ViewPager) findViewById(R.id.pager);
+//        PagerAdapter padapter = new PagerAdapter(getSupportFragmentManager());
+//        viewpager.setAdapter(padapter);
     }
 
     @Override
@@ -80,7 +96,6 @@ public class PlattegrondFragment extends Fragment {
 
     public void setDestination()
     {
-        plattegrondView.destination = plattegrondView.locaties.get(6);
         plattegrondView.invalidate();
         Log.d("Jinxi", "Setting destination..");
     }

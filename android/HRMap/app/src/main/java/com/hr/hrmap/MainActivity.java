@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,6 +25,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import org.jgrapht.*;
 import org.jgrapht.alg.DijkstraShortestPath;
@@ -32,6 +36,9 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
 
     PlattegrondFragment plattegrondFragment = null;
+    Plattegrond plattegrond;
+    FragmentManager mFragmentManager;
+    FragmentTransaction mFragmentTransaction;
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -48,8 +55,13 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        plattegrond = new Plattegrond();
         setContentView(R.layout.activity_main);
+
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.replace(R.id.containerView,new VerdiepingenFragment()).commit();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -62,16 +74,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        //database openen:
-        AssetDatabaseOpenHelper adb = new AssetDatabaseOpenHelper(this);
-        SQLiteDatabase db = adb.openDatabase();
-        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-
-        UndirectedGraph<String, DefaultEdge> graph = createStringGraph();
-        DijkstraShortestPath path = new DijkstraShortestPath<>(graph, "v1", "v3");
-        Log.d("Jinxi", graph.toString());
-        Log.d("Jinxi", path.getPath().toString());
 
         Intent intent = getIntent();
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
@@ -81,30 +83,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private static UndirectedGraph<String, DefaultEdge> createStringGraph()
-    {
-        UndirectedGraph<String, DefaultEdge> g =
-                new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
 
-        String v1 = "v1";
-        String v2 = "v2";
-        String v3 = "v3";
-        String v4 = "v4";
-
-        // add the vertices
-        g.addVertex(v1);
-        g.addVertex(v2);
-        g.addVertex(v3);
-        g.addVertex(v4);
-
-        // add edges to create a circuit
-        g.addEdge(v1, v2);
-        g.addEdge(v2, v3);
-        g.addEdge(v3, v4);
-        g.addEdge(v4, v1);
-
-        return g;
-    }
 
     @Override
     public void onBackPressed() {
@@ -157,13 +136,11 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.hoofdpagina) {
-            PlattegrondFragment fragment;
-            fragment = PlattegrondFragment.getInstance();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_fragment, fragment);
-            ft.commit();
-            plattegrondFragment = fragment;
+        if (id == R.id.verdiepingen) {
+            mFragmentManager = getSupportFragmentManager();
+            mFragmentTransaction = mFragmentManager.beginTransaction();
+            mFragmentTransaction.replace(R.id.containerView,new VerdiepingenFragment()).commit();
+            //plattegrondFragment = fragment;
         } else if (id == R.id.informatie) {
             Fragment fragment;
             fragment = new InformatieFragment();
@@ -181,21 +158,28 @@ public class MainActivity extends AppCompatActivity
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            Log.d("Jinxi", "class is " + getSupportFragmentManager().findFragmentById(R.id.content_fragment).getClass().toString());
-            if(this.plattegrondFragment != null)
-            {
-                this.plattegrondFragment.setDestination();
-            }else{
-                if(getSupportFragmentManager().findFragmentById(R.id.content_fragment).getClass().getSimpleName().equals("PlattegrondFragment")){
-                    plattegrondFragment = (PlattegrondFragment) getSupportFragmentManager().findFragmentById(R.id.content_fragment);
-                    plattegrondFragment.setDestination();
-                }
-            }
-
-            String uri = intent.getDataString();
-            Log.d("Jinxi", intent.getDataString());
+//            Log.d("Jinxi", "class is " + getSupportFragmentManager().findFragmentById(R.id.content_fragment).getClass().toString());
+//            if(this.plattegrondFragment != null)
+//            {
+//                this.plattegrondFragment.setDestination();
+//            }else{
+//                if(getSupportFragmentManager().findFragmentById(R.id.content_fragment).getClass().getSimpleName().equals("PlattegrondFragment")){
+//                    plattegrondFragment = (PlattegrondFragment) getSupportFragmentManager().findFragmentById(R.id.content_fragment);
+//                    plattegrondFragment.setDestination();
+//                }
+//            }
+//
+//            String uri = intent.getDataString();
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Uri data = intent.getData();
+            String uri = data.toString();
+            Log.d("Jinxi", "uri: " + uri);
             Toast.makeText(this, "Suggestion: "+ uri, Toast.LENGTH_SHORT).show();
+
+
         }
     }
+
+
 
 }
