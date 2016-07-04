@@ -52,10 +52,8 @@ public class PlattegrondFragment extends Fragment {
          */
         //plattegrondView = (PlattegrondView ) _view.findViewById(R.id.plattegrond);
         Intent intent = getActivity().getIntent();
-        Log.d("Jinxi", "creating fragment..."+intent.getAction());
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             String uri = intent.getDataString();
-            Log.d("Jinxi", "Suggestion: "+ uri);
         }
         return _view;
     }
@@ -83,21 +81,16 @@ public class PlattegrondFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Intent intent = getActivity().getIntent();
-        Log.d("Jinxi", "Resuming fragment..."+intent.getAction());
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Intent intent = getActivity().getIntent();
-        Log.d("Jinxi", "starting fragment..."+intent.getAction());
     }
 
     public void setDestination()
     {
         plattegrondView.invalidate();
-        Log.d("Jinxi", "Setting destination..");
     }
 
 }

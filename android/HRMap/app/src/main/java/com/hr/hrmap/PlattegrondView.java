@@ -33,10 +33,10 @@ public class PlattegrondView extends View implements OnTouchListener {
     List<Point> points = new ArrayList<Point>();
     Paint paint = new Paint();
     List<Locatie> locaties = new ArrayList<>();
-    UndirectedGraph<Locatie, DefaultEdge> g =  new SimpleGraph<Locatie, DefaultEdge>(DefaultEdge.class);
+    UndirectedGraph<Locatie, DefaultEdge> g = new SimpleGraph<Locatie, DefaultEdge>(DefaultEdge.class);
     Canvas canvas;
     public int currentVerdieping = 1;
-
+    List<Locatie> path = new ArrayList<>();
 
 
     public PlattegrondView(Context context, AttributeSet attrs) {
@@ -55,11 +55,13 @@ public class PlattegrondView extends View implements OnTouchListener {
         String verdieping = a.getString(R.styleable.PlattegrondView_verdieping);
         MainActivity activity = (MainActivity) getContext();
         this.locaties = activity.plattegrond.getLocatiesVanVerdieping(Integer.parseInt(verdieping));
+        if (activity.plattegrond.getPath() != null && activity.plattegrond.getPath().isEmpty() == false) {
+            this.path = activity.plattegrond.getPath();
+        }
     }
 
 
-    private void init(Context context)
-    {
+    private void init(Context context) {
 
 
     }
@@ -77,40 +79,52 @@ public class PlattegrondView extends View implements OnTouchListener {
 
     @Override
     public void onDraw(Canvas canvas) {
-        Log.d("jinxi", "Redrawing plattegrond");
         this.canvas = canvas;
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(5);
 
         for (Locatie locatie : locaties) {
+            if(locatie.naam.contains("lift")){
+                locatie.visible = true;
+            }
             locatie.draw(canvas);
         }
 
+        if (this.path.isEmpty() == false) {
+            Locatie prev = null;
+            //draw the path
+            for (Locatie locatie : path
+                    ) {
 
-        canvas.drawLine(0, 0, 20, 20, paint);
-        canvas.drawLine(20, 0, 0, 20, paint);
+                if(containsLocatie(locatie) == false)
+                {
+                    continue;
+                }
+                if(locatie.naam.contains("lift")){
+                    locatie.visible = true;
+                }
+                if (prev == null) {
+                    prev = locatie;
+                    if(prev.naam.contains("lift")){
+                        prev.visible = true;
+                    }
+                    continue;
+                }
+                if(prev.naam.contains("lift")){
+                    prev.visible = true;
+                }
+                drawPath(prev, locatie);
+                prev = locatie;
 
-        //drawAllEdges();
-//
-//        Log.d("Jinxi", vertices.toString());
-//        Locatie prev = null;
-//        for(Locatie locatie: vertices)
-//        {
-//            if(prev == null)
-//            {
-//                prev = locatie;
-//                continue;
-//            }
-//
-//            drawPath(prev, locatie);
-//            prev = locatie;
-//        }
-
+            }
+        }
     }
 
-    public void drawPath(Locatie l1, Locatie l2)
-    {
-        Log.d("Jinxi", "drawing path...." + l1.toString() + " -> " + l2);
+    public boolean containsLocatie(Locatie locatie) {
+        return this.locaties.contains(locatie);
+    }
+
+    public void drawPath(Locatie l1, Locatie l2) {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(5);
         paint.setColor(Color.BLUE);
@@ -121,23 +135,19 @@ public class PlattegrondView extends View implements OnTouchListener {
         canvas.drawPath(path, paint);
     }
 
-    public void drawAllEdges()
-    {
+    public void drawAllEdges() {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(5);
         paint.setColor(Color.BLUE);
 
-        for(Locatie locatie: locaties)
-        {
-            for(Locatie locatie1: locaties)
-            {
-                if(locatie == locatie1){
+        for (Locatie locatie : locaties) {
+            for (Locatie locatie1 : locaties) {
+                if (locatie == locatie1) {
                     continue;
                 }
 
                 DefaultEdge edge = g.getEdge(locatie, locatie1);
-                if(edge != null){
-                    Log.d("Jinxi", "drawing  my line");
+                if (edge != null) {
                     Path path = new Path();
                     path.moveTo(locatie.x, locatie.y);
                     path.lineTo(locatie1.x, locatie1.y);
@@ -147,13 +157,11 @@ public class PlattegrondView extends View implements OnTouchListener {
             }
         }
 
-        Log.d("Jinxi1", g.toString());
     }
 
-    private void drawLocatie(Canvas canvas, Locatie locatie)
-    {
+    private void drawLocatie(Canvas canvas, Locatie locatie) {
         canvas.drawCircle(locatie.x, locatie.y, 10, locatie.paint);
-        canvas.drawText(locatie.naam, locatie.x - 50 ,locatie.y - 20, locatie.paint);
+        canvas.drawText(locatie.naam, locatie.x - 50, locatie.y - 20, locatie.paint);
     }
 
     private static Path makeArrow(float length, float height) {

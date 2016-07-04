@@ -28,10 +28,10 @@ public class LokalenSuggestionProvider extends ContentProvider {
 
         this.locaties.add(new Locatie(1325, 180, "lift", 30, 1)); //lift
 
-        this.locaties.add(new Locatie(400, 400, "m1", 30, 1)); //m1
-        this.locaties.add(new Locatie(600, 400, "m2", 30, 1)); //m2
-        this.locaties.add(new Locatie(800, 400, "m3", 30, 1)); //m3
-        this.locaties.add(new Locatie(1000, 400, "m4", 30, 1)); //m4
+//        this.locaties.add(new Locatie(400, 400, "m1", 30, 1)); //m1
+//        this.locaties.add(new Locatie(600, 400, "m2", 30, 1)); //m2
+//        this.locaties.add(new Locatie(800, 400, "m3", 30, 1)); //m3
+//        this.locaties.add(new Locatie(1000, 400, "m4", 30, 1)); //m4
 
         this.locaties.add(new Locatie(600, 200, "H.1.110", 30, 1)); //H.1.110
         this.locaties.add(new Locatie(750, 200, "H.1.112", 30, 1)); //H.1.112

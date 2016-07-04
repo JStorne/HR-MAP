@@ -7,7 +7,7 @@
         android:icon="@drawable/logohrmap"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
 
         <provider
             android:name=".LokalenSuggestionProvider"

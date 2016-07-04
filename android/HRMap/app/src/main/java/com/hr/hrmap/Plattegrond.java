@@ -18,6 +18,7 @@ public class Plattegrond {
 
     UndirectedGraph<Locatie, DefaultEdge> g =  new SimpleGraph<Locatie, DefaultEdge>(DefaultEdge.class);
     List<Locatie> locaties = new ArrayList<>();
+    List<Locatie> path;
     Locatie start;
     Locatie destination;
 
@@ -28,9 +29,9 @@ public class Plattegrond {
     private void initLocaties()
     {
         Locatie lift = new Locatie(1325, 180, "lift", 30, 1);
+        lift.visible = true;
         this.locaties.add(lift); //lift
         this.g.addVertex(lift);
-        this.start = lift;
 
         Locatie m1 = new Locatie(1000, 400, "m1", 30, 1);
         this.locaties.add(m1); //m1
@@ -106,7 +107,7 @@ public class Plattegrond {
         this.g.addEdge(lift, h1_206);
 
         Locatie h1_204 = new Locatie(1400, 400, "H.1.206", 30, 1);
-        this.locaties.add(h1_204); //H.1.204
+        this.locaties.add(h1_204); //H.1.204r
         this.g.addVertex(h1_204);
         this.g.addEdge(lift, h1_204);
 
@@ -197,11 +198,18 @@ public class Plattegrond {
 
     }
 
-    public void printRoute()
+    public void calculatePath()
     {
         DijkstraShortestPath path = new DijkstraShortestPath<>(g, this.start, this.destination);
-        List<Locatie> vertices = Graphs.getPathVertexList(path.getPath());
-        Log.d("Jinxi", vertices.toString());
+        this.path = Graphs.getPathVertexList(path.getPath());
+    }
+
+    public void reset()
+    {
+        this.start = null;
+        this.destination = null;
+        this.path = null;
+        this.clearVisibility();
     }
 
     /**
@@ -211,10 +219,7 @@ public class Plattegrond {
      */
     public List<Locatie> getPath()
     {
-        DijkstraShortestPath path = new DijkstraShortestPath<>(g, this.start, this.destination);
-        List<Locatie> vertices = Graphs.getPathVertexList(path.getPath());
-
-        return vertices;
+        return this.path;
     }
 
     /**
@@ -234,5 +239,67 @@ public class Plattegrond {
         }
 
         return verdiepingLocaties;
+    }
+
+    public void setLocatieVisitble(int id)
+    {
+        for (Locatie locatie: locaties
+                ) {
+            if(locatie.id == id){
+               locatie.visible = true;
+                return;
+            }
+        }
+    }
+
+    public Locatie getLocatieByID(int id)
+    {
+        for (Locatie locatie: locaties
+                ) {
+            if(locatie.id == id){
+                return locatie;
+            }
+        }
+
+        return null;
+    }
+
+
+    public void setLocatieStart(int id)
+    {
+        for (Locatie locatie: locaties
+                ) {
+            if(locatie.id == id){
+                locatie.visible = true;
+                this.start = locatie;
+                return;
+            }
+        }
+    }
+
+
+    public void clearVisibility()
+    {
+        for (Locatie locatie: locaties
+                ) {
+            if(locatie.naam.contains("lift") == false){
+                locatie.visible = false;
+            }
+        }
+    }
+
+    public void setDestination(int id)
+    {
+        for (Locatie locatie: locaties
+                ) {
+            if(locatie.id == id){
+                this.destination = locatie;
+                break;
+            }
+        }
+
+        if(this.destination != null){
+            this.calculatePath();
+        }
     }
 }

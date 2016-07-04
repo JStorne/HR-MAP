@@ -16,6 +16,7 @@ public class Locatie {
     String naam;
     Paint paint = new Paint();
     public int verdieping;
+    public boolean visible;
 
     public Locatie(float x, float y, String naam, int verdieping) {
         this.x = x;
@@ -41,11 +42,19 @@ public class Locatie {
         }catch (RuntimeException e){
 
         }
+        if(naam.startsWith("n") || naam.startsWith("m")){
+            this.visible = false;
+        }else{
+            //this.visible = true;
+        }
 
     }
 
     public void draw(Canvas canvas)
     {
+        if(this.visible == false){
+            return;
+        }
         canvas.drawCircle(this.x, this.y, 10, this.paint);
         canvas.drawText(this.naam, this.x - 50 ,this.y - 20, this.paint);
     }

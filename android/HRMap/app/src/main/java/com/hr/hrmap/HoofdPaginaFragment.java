@@ -30,12 +30,6 @@ public class HoofdPaginaFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Intent intent = getActivity().getIntent();
-        Log.d("Jinxi", "Resuming fragment...");
-        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            String uri = intent.getDataString();
-            Log.d("Jinxi", "Suggestion: "+ uri);
-        }
     }
 
 
